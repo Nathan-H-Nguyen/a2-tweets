@@ -49,8 +49,22 @@ class Tweet {
         if (this.source != 'completed_event') {
             return "unknown";
         }
-        //TODO: parse the activity type from the text of the tweet
-        return "";
+        
+        if (this.text.includes(" run ")) {
+            return "run";
+        } else if (this.text.includes(" walk ")) {
+            return "walk";
+        } else if (this.text.includes(" bike ")) {
+            return "bike";
+        } else if (this.text.includes(" hike ")) {
+            return "hike";
+        } else if (this.text.includes(" swim ")) {
+            return "swim";
+        } else if (this.text.includes(" workout ")) {
+            return "workout";
+        } else {
+            return "unknown";
+        }
     }
 
     get distance():number {
