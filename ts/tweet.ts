@@ -30,7 +30,7 @@ class Tweet {
             return false;
         }
 
-        if (!this.text.includes("-")) {
+        if (!this.text.includes(" - ")) {
             return false;
         }
 
@@ -41,8 +41,41 @@ class Tweet {
         if(!this.written) {
             return "";
         }
-        //TODO: parse the written text from the tweet
-        return "";
+
+        const start = this.text.indexOf(" - ") + 3;
+        const end = this.text.indexOf(" http", start);
+
+        return this.text.substring(start, end);
+    }
+
+    get link():string {
+        if (!this.written) {
+            return "";
+        }
+
+        let start = this.text.indexOf(" - ") + 3;
+        let end = this.text.indexOf(" http", start);
+
+        start = end + 1;
+        end = this.text.indexOf(" ", start);
+
+        return this.text.substring(start, end);
+    }
+
+    get rest():string {
+        if (!this.written) {
+            return "";
+        }
+
+        let start = this.text.indexOf(" - ") + 3;
+        let end = this.text.indexOf(" http", start);
+
+        start = end + 1;
+        end = this.text.indexOf(" ", start);
+
+        start = end + 1;
+
+        return this.text.substring(start);
     }
 
     get activityType():string {
@@ -72,29 +105,43 @@ class Tweet {
             return 0;
         }
 
-        // First character after "Just completed a "
-        const start = 17;
+        let start = 0;
 
-        if (!"0123456789".includes(this.text.charAt(17))) {
+        while (start < this.text.length && !"0123456789".includes(this.text.charAt(start))) {
+            start++;
+        }
+
+        // No number in tweet, should never happen tho
+        if (start === this.text.length) {
             return 0;
         }
 
-        var end = start;
-        while (this.text.charAt(end) !== ' ') {
+        let end = start;
+        while (end < this.text.length && "0123456789.".includes(this.text.charAt(end))) {
             end++;
         }
 
-        var res = parseFloat(this.text.substring(start, end));
+        // Time not distance
+        if (this.text.charAt(end) === ':') {
+            return 0;
+        }
 
-        if (this.text.substring(end, end+2) === "km") {
-            res /= 1.609;
+        const res = parseFloat(this.text.substring(start, end));
+
+        if (this.text.substring(end + 1, end + 3) === "km") {
+            return res / 1.609;
         }
 
         return res;
     }
 
     getHTMLTableRow(rowNumber:number):string {
-        //TODO: return a table row which summarizes the tweet with a clickable link to the RunKeeper activity
-        return "<tr></tr>";
+        return `
+            <tr>
+                <td>${rowNumber}</td>
+                <td>${this.activityType}</td>
+                <td>${this.writtenText} <a href="${this.link}" target="_blank">${this.link}</a> ${this.rest}</td>
+            </tr>
+        `;
     }
 }
