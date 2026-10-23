@@ -59,6 +59,10 @@ class Tweet {
         start = end + 1;
         end = this.text.indexOf(" ", start);
 
+        if (end === -1) {
+            end = this.text.length;
+        }
+
         return this.text.substring(start, end);
     }
 
@@ -72,6 +76,10 @@ class Tweet {
 
         start = end + 1;
         end = this.text.indexOf(" ", start);
+
+        if (end === -1) {
+            return "";
+        }
 
         start = end + 1;
 
