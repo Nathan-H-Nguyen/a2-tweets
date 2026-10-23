@@ -9,16 +9,18 @@ function parseTweets(runkeeper_tweets) {
 		return new Tweet(tweet.text, tweet.created_at);
 	});
 
+	completed_tweets = tweet_array.filter(item => item.source === "completed_event");
+
 	// Determining activity type and distance
 	const distinct_activities = new Set();
-	for (const tweet of tweet_array) {
+	for (const tweet of completed_tweets) {
 		distinct_activities.add(tweet.activityType)
 	}
 
 	document.getElementById("numberActivities").innerText = distinct_activities.size
 
 	const count = {};
-	for (const tweet of tweet_array) {
+	for (const tweet of completed_tweets) {
 		count[tweet.activityType] = (count[tweet.activityType] || 0) + 1;
 	}
 
@@ -33,7 +35,7 @@ function parseTweets(runkeeper_tweets) {
 	longest_distance = -Infinity;
 	longest_activity = "";
 
-	for (const tweet of tweet_array) {
+	for (const tweet of completed_tweets) {
 		activity = tweet.activityType;
 		distance = tweet.distance
 
@@ -59,7 +61,7 @@ function parseTweets(runkeeper_tweets) {
 	weekday_count = 0;
 	weekday_sum = 0;
 
-	for (const tweet of tweet_array) {
+	for (const tweet of completed_tweets) {
 		if (tweet.time.getDay() == 0 || tweet.time.getDay() == 6) {
 			weekend_count++;
 			weekend_sum += tweet.distance;
@@ -72,7 +74,7 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementById("weekdayOrWeekendLonger").innerText = (weekend_sum / weekend_count) > (weekday_sum / weekday_count) ? "weekends" : "weekdays";
 
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
-	activity_data = tweet_array.map(item => ({ activityType: item.activityType, distance: item.distance, time: item.time}));
+	activity_data = completed_tweets.map(item => ({ activityType: item.activityType, distance: item.distance, time: item.time}));
 	const top_types = top_three_activities.map(([type]) => type);
 	const top_three_data = activity_data.filter((item => top_types.includes(item.activityType)));
 
@@ -132,7 +134,7 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementById("aggregate").addEventListener("click", () => {
 		distanceVis.style.display = distanceVisAggregated.style.display === "none" ? "none" : "";
 		distanceVisAggregated.style.display = distanceVisAggregated.style.display === "none" ? "" : "none";
-		document.getElementById("aggregate").innerText = distanceVisAggregated.style.display === "none" ? "Show all activities" : "Show means";
+		document.getElementById("aggregate").innerText = distanceVisAggregated.style.display === "none" ? "Show means" : "Show all activities";
 	});
 }
 
