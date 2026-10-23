@@ -90,21 +90,35 @@ class Tweet {
         if (this.source != 'completed_event') {
             return "unknown";
         }
-        
-        if (this.text.includes(" run ")) {
+
+        const text = this.text.includes(" - ") ? this.text.substring(0, this.text.indexOf(" - ") + 1) : this.text;
+
+        if (text.includes(" run ")) {
             return "run";
-        } else if (this.text.includes(" walk ")) {
+        } else if (text.includes(" walk ")) {
             return "walk";
-        } else if (this.text.includes(" bike ")) {
+        } else if (text.includes(" bike ")) {
             return "bike";
-        } else if (this.text.includes(" hike ")) {
+        } else if (text.includes(" hike ")) {
             return "hike";
-        } else if (this.text.includes(" swim ")) {
+        } else if (text.includes(" swim ")) {
             return "swim";
-        } else if (this.text.includes(" workout ")) {
+        } else if (text.includes(" elliptical ")) {
+            return "elliptical";
+        } else if (text.includes(" strength ")) {
+            return "strength";
+        }  else if (text.includes(" crossfit ")) {
+            return "crossfit";
+        }  else if (text.includes(" stairmaster ") || this.text.includes(" stepwell ")) {
+            return "stair";
+        }  else if (text.includes(" circuit ")) {
+            return "circuit";
+        }  else if (text.includes(" group ")) {
+            return "group";
+        } else if (text.includes(" workout ")) {
             return "workout";
         } else {
-            return "unknown";
+            return "other";
         }
     }
 
