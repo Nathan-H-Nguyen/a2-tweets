@@ -71,8 +71,26 @@ class Tweet {
         if(this.source != 'completed_event') {
             return 0;
         }
-        //TODO: prase the distance from the text of the tweet
-        return 0;
+
+        // First character after "Just completed a "
+        const start = 17;
+
+        if (!"0123456789".includes(this.text.charAt(17))) {
+            return 0;
+        }
+
+        var end = start;
+        while (this.text.charAt(end) !== ' ') {
+            end++;
+        }
+
+        var res = parseFloat(this.text.substring(start, end));
+
+        if (this.text.substring(end, end+2) === "km") {
+            res /= 1.609;
+        }
+
+        return res;
     }
 
     getHTMLTableRow(rowNumber:number):string {
