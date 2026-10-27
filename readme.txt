@@ -26,6 +26,7 @@ Around 15-20 hours.
     - Asked if it was normal for our latest date displayed to be September 29th when our latest tweet shows September 30th, and if this was caused by toLocaleDateString() since I'm in California
     - For activity_vis_spec asked how to increase the max y-value shown on the graph, asked this so that our bar doesn't hug the top border and has a little buffer
     - Asked for help identifying a bug I couldn't figure out when parsing tweets for Part 3, turns out it was just a one off error when I was doing stuff with substrings
+    - Also asked for guidance to make graphs appear/disappear
 
 
 
