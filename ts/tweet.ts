@@ -17,7 +17,7 @@ class Tweet {
             return "live_event";
         }
 
-        if (this.text.includes("Achieved")) {
+        if (this.text.includes("Achieved ")) {
             return "achievement";
         }
 
