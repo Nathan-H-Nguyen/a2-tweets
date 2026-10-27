@@ -13,7 +13,7 @@ class Tweet {
             return "completed_event";
         }
 
-        if (this.text.includes("Watch")) {
+        if (this.text.includes("Watch my")) {
             return "live_event";
         }
 
